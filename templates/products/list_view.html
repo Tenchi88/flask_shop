@@ -1,13 +1,14 @@
 {% extends 'products/base.html' %}
 
 {% block page_content %}
+  <ul class=products>
+  {% for product in products %}
   <div class="row">
     <div class="col-md-4">
       <img src="/{{ product.image_url }}" width="100%"/>
     </div>
-    <div class="col-md-8">
-      <h2>{{ product.title }}</h2>
-      <div class="well">{{ product.params }}</div>
+    <div class="col-md-4">
+      <h2><a href="/v1/products/{{ product.id }}/"> {{ product.title }} </a></h2>
       <div class="well">
           <p>Цена: {{ product.price_rub }} рублей</p>
           {% if product.in_store %}
@@ -17,7 +18,8 @@
           {% endif %}
           <p>Категория: {{ product.category.title }}</p>
       </div>
-
     </div>
   </div>
+  {% endfor %}
+  </ul>
 {% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'products/base.html' %}
+
+{% block page_content %}
+  <div class="row">
+      <h2>{{ product.title }}</h2>
+  </div>
+  <div class="row product_detail_view_menu">
+    <div class="col-md-2 product_detail_view_menu_item">
+        Описание
+    </div>
+    <div class="col-md-2 product_detail_view_menu_item">
+        Характеристики
+    </div>
+    <div class="col-md-2 product_detail_view_menu_item">
+        Модификации
+    </div>
+    <div class="col-md-2 product_detail_view_menu_item">
+        Цены
+    </div>
+    <div class="col-md-2 product_detail_view_menu_item">
+        Карта
+    </div>
+    <div class="col-md-2 product_detail_view_menu_item">
+        Отзывы
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <img src="/{{ product.image_url }}" width="100%"/>
+    </div>
+    <div class="col-md-4">
+      <div class="well">{{ product.params }}</div>
+    </div>
+    <div class="col-md-4">
+      <div class="well">
+          <p>Цена: {{ product.price_rub }} рублей</p>
+          {% if product.in_store %}
+            <p>Налие: есть в наличии</p>
+          {% else %}
+            <p>Налие: нет в наличии</p>
+          {% endif %}
+          <p>Категория: {{ product.category.title }}</p>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
