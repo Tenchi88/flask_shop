@@ -1,0 +1,4 @@
+flask==0.12.2
+marshmallow==2.13.6
+flask-bootstrap==3.3.5.7
+sqlalchemy==1.1.13
