@@ -36,13 +36,16 @@ class BaseView(View):
     def dispatch_request(self, **kwargs):
         self.session = db.Session()
         api_key = request.headers.get('HTTP-X-API-KEY')
-        if self.validate_api_key and self.session.query(db.APIKeys.api_key).filter(db.APIKeys.api_key==api_key).exists():
+        if self.validate_api_key and self.session.query(
+                db.APIKeys.api_key
+        ).filter(db.APIKeys.api_key == api_key).exists():
             response = jsonify({'error': 'Wrong API key'})
             response.status_code = 400
             return response
 
         RATE_LIMITS_INFO[api_key] = RATE_LIMITS_INFO.get(api_key, 0) + 1
-        if self.validate_rate_limits and RATE_LIMITS_INFO[api_key] > MAX_REQUESTS_PER_USER:
+        if self.validate_rate_limits \
+                and RATE_LIMITS_INFO[api_key] > MAX_REQUESTS_PER_USER:
             response = jsonify({'error': 'Rate limit exceeded'})
             response.status_code = 400
             return response
@@ -68,11 +71,14 @@ class ItemListResource(ModelView):
         products_to_show = self.session.query(self.model)
         if query:
             products_to_show = products_to_show.filter(
-                getattr(self.model, self.search_field).ilike('%{}%'.format(query)))
+                getattr(self.model, self.search_field
+                        ).ilike('%{}%'.format(query)))
 
         filter_field = request.args.get('filter')
         if filter_field:
-            products_to_show = [p for p in products_to_show if p.get(filter_field)]
+            products_to_show = [
+                p for p in products_to_show if p.get(filter_field)
+            ]
 
         from_element = request.args.get('from')
         to_element = request.args.get('to')
@@ -136,7 +142,8 @@ class ItemDetailResource(ModelView):
 
     def patch(self, product_id):
         raw_product = json.loads(request.data.decode('utf-8'))
-        clean_product, errors = self.schema().load(raw_product, partial=tuple(fields))
+        clean_product, errors = self.schema().load(raw_product,
+                                                   partial=tuple(fields))
         if errors:
             response = jsonify(errors)
             response.status_code = 400
